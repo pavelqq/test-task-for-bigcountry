@@ -52,8 +52,8 @@ export default {
 <style scoped>
   .card-item {
     margin: 2em auto;
-    width: 30%;
-    min-width: 300px;
+    width: 35%;
+    min-width: 320px;
   }
   .author {
     justify-content: flex-start;

@@ -68,7 +68,7 @@ export default {
 <style scoped>
   .commentary-form {
     margin: 2em auto;
-    width: 30%;
-    min-width: 270px;
+    width: 35%;
+    min-width: 320px;
   }
 </style>
