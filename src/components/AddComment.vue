@@ -1,8 +1,23 @@
 <template>
-  <form @submit.prevent="onSubmit">
-    <input type="text" v-model="body">
-    <button type="submit">Отправить</button>
-  </form>
+  <v-form v-model="valid" @submit.prevent="onSubmit" class="commentary-form">
+    <v-textarea
+        v-model="body"
+        :rules="commentaryRules"
+        :counter="1000"
+        clearable
+        filled
+        label="Новый комментарий"
+        append-icon="mdi-script-text"
+        required
+    ></v-textarea>
+    <v-btn
+        elevation="0"
+        type="submit"
+        block
+    >
+      Отправить
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -13,6 +28,12 @@ export default {
   data() {
     return {
       body: '',
+      valid: false,
+      commentaryRules: [
+        v => !!v || 'Нельзя отправить пустое поле',
+        v => v.length <= 1000 || 'Комментарий не длиннее 1000 символов',
+        v => v.split(' ').filter(function (n) {return n !== ''}).length > 2 || 'Не меньше 3 слов в комментарии'
+      ],
     }
   },
   methods: {
@@ -45,16 +66,9 @@ export default {
 </script>
 
 <style scoped>
-  input {
-    width: 50%;
-    min-width: 200px;
-    height: 30px;
-    border: 1px solid #ccc;
-  }
-  button {
-    border: 1px solid #ccc;
-    height: 30px;
-    width: 10%;
-    min-width: 100px;
+  .commentary-form {
+    margin: 2em auto;
+    width: 40%;
+    min-width: 400px;
   }
 </style>

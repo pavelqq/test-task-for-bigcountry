@@ -5,18 +5,18 @@
 <style>
   .lds-dual-ring {
     display: inline-block;
-    width: 64px;
-    height: 64px;
+    width: 128px;
+    height: 128px;
   }
   .lds-dual-ring:after {
     content: " ";
     display: block;
-    width: 46px;
-    height: 46px;
-    margin: 1px;
+    width: 92px;
+    height: 92px;
+    margin: 50% auto;
     border-radius: 50%;
     border: 5px solid #cef;
-    border-color: #cef transparent #cef transparent;
+    border-color: #e7e7e7 transparent #e7e7e7 transparent;
     animation: lds-dual-ring 1.2s linear infinite;
   }
   @keyframes lds-dual-ring {
