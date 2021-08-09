@@ -1,15 +1,8 @@
 <template>
   <div id="app">
-    <p>
-      Тестовое задание для
-      <a
-        href="https://bolshayastrana.com/"
-        class="text-decoration-none"
-      >
-        bolshayastrana.com
-      </a>
+    <p class="title">
+      Тестовое задание.
     </p>
-
     <router-view />
   </div>
 </template>
@@ -19,11 +12,16 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  justify-content: center;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
 a {
   text-decoration: none;
+}
+.title {
+  max-width: 50%;
+  margin: 0 auto;
 }
 </style>

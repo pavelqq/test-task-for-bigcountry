@@ -43,7 +43,7 @@ export default {
   },
   filters: {
     moment: function (date) {
-      return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+      return moment(date).format('LLL');
     }
   }
 }
@@ -52,8 +52,8 @@ export default {
 <style scoped>
   .card-item {
     margin: 2em auto;
-    width: 40%;
-    min-width: 400px;
+    width: 30%;
+    min-width: 300px;
   }
   .author {
     justify-content: flex-start;
