@@ -8,19 +8,19 @@
         @add-comment="addComment"
     />
     <div>
-      <button type="button" v-if="page !== 1" @click="page--">
-        <router-link :to="{ name: 'comments', query: { id: page-1 }}">
+      <button type="button" v-if="pageNum !== 1" @click="pageNum--">
+        <router-link :to="{ name: 'comments', query: { page: pageNum-1 }}">
           Назад
         </router-link>
       </button>
-      <button class="page-number" type="button" v-for="pageNumber in pages.slice(page-1, page+10)"
-          :key="pageNumber" @click="page = pageNumber">
-        <router-link :to="{ name: 'comments', query: { id: pageNumber }}">
+      <button class="page-number" type="button" v-for="pageNumber in pages.slice(pageNum-1, pageNum+10)"
+          :key="pageNumber" @click="pageNum = pageNumber">
+        <router-link :to="{ name: 'comments', query: { page: pageNumber }}">
           {{pageNumber}}
         </router-link>
       </button>
-      <button type="button" v-if="page < pages.length" @click="page++">
-        <router-link :to="{ name: 'comments', query: { id: +page+1 }}">
+      <button type="button" v-if="pageNum < pages.length" @click="pageNum++">
+        <router-link :to="{ name: 'comments', query: { page: +pageNum+1 }}">
           Далее
         </router-link>
       </button>
@@ -29,7 +29,7 @@
         v-bind:comments="displayedComments"
     />
   </div>
-  <p v-else>Нет комментариев.</p>
+  <p v-else class="loading-error">Нет комментариев.</p>
 </template>
 
 <script>
@@ -44,7 +44,7 @@ export default {
     return {
       comments: [],
       baseUrl: '//bigcountry-task.vercel.app/',
-      page: this.$route.query['id'] ? this.$route.query['id'] : 1,
+      pageNum: this.$route.query['page'] ? this.$route.query['page'] : 1,
       perPage: 20,
       pages: [],
       loading: true
@@ -71,10 +71,10 @@ export default {
       }
     },
     paginate(comments) {
-      let page = this.page;
+      let pageNum = this.pageNum;
       let perPage = this.perPage;
-      let from = (page * perPage) - perPage;
-      let to = (page * perPage);
+      let from = (pageNum * perPage) - perPage;
+      let to = (pageNum * perPage);
       return  comments.slice(from, to);
     },
   },
@@ -103,7 +103,7 @@ export default {
 .addCommentForm {
   margin: 1%
 }
-.page-number {
+.page-number, .loading-error {
   margin: 0.7%;
 }
 </style>
