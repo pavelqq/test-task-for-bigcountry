@@ -10,5 +10,5 @@ app.get('*', function (req, res) {
 });
 
 app.listen(port, () => {
-    console.log('Сервер запущен!');
+    console.log('Сервер работает!');
 });
