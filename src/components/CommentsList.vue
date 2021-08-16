@@ -5,7 +5,6 @@
         v-for="comment of comments"
         v-bind:comment="comment"
         :key="comment.id"
-        v-on:add-comment="addComment"
       />
     </ul>
   </div>
@@ -16,15 +15,14 @@
 import CommentItem from '@/components/CommentItem'
 
 export default {
-  props: ['comments'],
+  props: {
+    comments: {
+      type: Array
+    }
+  },
   components: {
     CommentItem
   },
-  methods: {
-    addComment(data) {
-      console.log(data)
-    }
-  }
 }
 </script>
 

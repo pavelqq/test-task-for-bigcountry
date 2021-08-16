@@ -23,6 +23,7 @@
 <script>
 
 import { uuid } from 'vue-uuid';
+import {user} from "@/service/Auth";
 
 export default {
   data() {
@@ -38,27 +39,23 @@ export default {
   },
   methods: {
     onSubmit() {
-      if(
-          this.body.trim()
-          && this.body.length < 1000
-          && (this.body.split(' ').filter(function (n) {return n !== ''}).length) > 2
-      ) {
+      if(this.valid) {
         const newComment = {
           id: uuid.v4(),
           created_at: new Date().toISOString(),
           body: this.body,
           author: {
-            id: 16,
-            name: "John Doe",
-            avatar: "http://placeimg.com/640/480/business",
-            company: "BigCountry"
+            id: user.id,
+            name: user.name,
+            avatar: user.avatar,
+            company: user.company
           }
         }
 
         this.$emit('add-comment', newComment)
         this.body = '';
       } else {
-        console.log(`Ошибка! Сообщение содержит меньше 3 слов или длина сообщения больше 1000 символов!`)
+        alert(`Ошибка! Сообщение содержит меньше 3 слов или длина сообщения больше 1000 символов!`)
       }
     }
   }

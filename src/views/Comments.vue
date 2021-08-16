@@ -7,24 +7,12 @@
         class="addCommentForm"
         @add-comment="addComment"
     />
-    <div>
-      <button type="button" v-if="pageNum !== 1" @click="pageNum--">
-        <router-link :to="{ name: 'comments', query: { page: pageNum-1 }}">
-          Назад
-        </router-link>
-      </button>
-      <button class="page-number" type="button" v-for="pageNumber in pages.slice(pageNum-1, pageNum+10)"
-          :key="pageNumber" @click="pageNum = pageNumber">
-        <router-link :to="{ name: 'comments', query: { page: pageNumber }}">
-          {{pageNumber}}
-        </router-link>
-      </button>
-      <button type="button" v-if="pageNum < pages.length" @click="pageNum++">
-        <router-link :to="{ name: 'comments', query: { page: +pageNum+1 }}">
-          Далее
-        </router-link>
-      </button>
-    </div>
+    <Pagination
+        v-model="pageNum"
+        :per-page="perPage"
+        :items-count="comments.length"
+        :pages="pages"
+    />
     <CommentsList
         v-bind:comments="displayedComments"
     />
@@ -37,15 +25,16 @@
 import CommentsList from '@/components/CommentsList'
 import AddComment from "@/components/AddComment";
 import Loader from '@/components/Loader'
-import axios from "axios";
+import Pagination from "@/components/Pagination";
+
+import {getCommentsRequest} from "@/service/Api";
 
 export default {
   data() {
     return {
-      comments: [],
-      baseUrl: '//bigcountry-task.vercel.app/',
-      pageNum: this.$route.query['page'] ? this.$route.query['page'] : 1,
+      pageNum: +this.$route.query['page'] ? +this.$route.query['page'] : 1,
       perPage: 20,
+      comments: [],
       pages: [],
       loading: true
     }
@@ -54,15 +43,14 @@ export default {
     addComment(comment) {
       this.comments.unshift(comment)
     },
-    getPosts() {
-      axios.get(this.baseUrl+'comments.json')
-          .then(response => {
-            this.comments = response.data;
-            this.loading = false
-          })
-          .catch(response => {
-            console.log(response);
-          });
+    async getComments() {
+      try {
+        const res = await getCommentsRequest()
+        this.comments = res.data
+        this.loading = false
+      } catch (e) {
+        alert('Ошибка: ' + e)
+      }
     },
     setPages() {
       let numberOfPages = Math.ceil(this.comments.length / this.perPage);
@@ -75,26 +63,27 @@ export default {
       let perPage = this.perPage;
       let from = (pageNum * perPage) - perPage;
       let to = (pageNum * perPage);
-      return  comments.slice(from, to);
+      return comments.slice(from, to);
     },
   },
   mounted() {
-    this.getPosts();
+    this.getComments();
   },
   watch: {
-    comments () {
+    comments() {
       this.setPages();
     }
   },
   computed: {
     displayedComments() {
       return this.paginate(this.comments);
-    }
+    },
   },
   components: {
     AddComment,
     CommentsList,
-    Loader
+    Loader,
+    Pagination
   }
 }
 </script>
@@ -103,7 +92,7 @@ export default {
 .addCommentForm {
   margin: 1%
 }
-.page-number, .loading-error {
+.loading-error {
   margin: 0.7%;
 }
 </style>
